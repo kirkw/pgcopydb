@@ -790,7 +790,8 @@ stream_apply_sql(StreamApplyContext *context,
 													 lsn,
 													 metadata->timestamp))
 			{
-				/* errors have already been logged */
+				log_error("Failed to setup apply transaction, "
+						  "see above for details");
 				return false;
 			}
 
@@ -1806,8 +1807,8 @@ stream_apply_read_lsn_tracking(StreamApplyContext *context)
 	/* it's okay if the file does not exists, just skip the operation */
 	if (!file_exists(filename))
 	{
-		log_warn("Failed to parse JSON file \"%s\": file does not exists",
-				 filename);
+		log_notice("Failed to parse JSON file \"%s\": file does not exists",
+				   filename);
 		return true;
 	}
 
